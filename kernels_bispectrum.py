@@ -53,8 +53,7 @@ def main(args):
 
     if not os.path.exists(name_file):
 
-        cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[args.cosmo]
-
+        '''cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[args.cosmo]
         h = cosmo[2]
         omega_cdm = cosmo[0]
         omega_b = cosmo[1]
@@ -74,6 +73,28 @@ def main(args):
             'N_ur':2.0328, 
             'N_ncdm':1, 
             'omega_ncdm':0.0006442
+        }'''
+
+
+        cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/forFFcomp/eft_cosmologies_h_lnAs_Ocdm.npy')[args.cosmo]
+
+        h = cosmo[0]
+        omega_cdm = cosmo[2]
+        lnAs = cosmo[1]
+
+        params_cosmo = {
+            'output': 'mPk',
+            'P_k_max_h/Mpc': 50.,
+            'h': h,
+            'omega_b': 0.022,
+            'omega_cdm': omega_cdm,
+            'ln10^{10}A_s': lnAs,
+            'n_s': 0.965,
+            'N_ur': 2.038,
+            'N_ncdm': 1,
+            'm_ncdm': 0.1,
+            'tau_reio': 0.0544,
+            'z_max_pk': 3,
         }
 
         cosmo = Class()
@@ -90,24 +111,29 @@ def main(args):
             ns_fid = .9649'''
 
             #cosmo fid FF
-            h_fid = h
-            omega_b_fid = omega_b
-            As_fid = 2.0830e-9
-            ns_fid = .9649
-            omega_cdm_fid = Omfid*h_fid**2-omega_b_fid
+            h_fid = .673
+            omega_b_fid = .022
+            As_fid = 2.101e-9
+            ns_fid = .965
+            omega_ncdm_fid = .001074
+            omega_cdm_fid = Omfid*h_fid**2-omega_b_fid-omega_ncdm_fid
 
             D = cosmo.angular_distance(z)
             H = cosmo.Hubble(z)
 
             params_cosmo_fid = {
+            'output': 'mPk',
+            'P_k_max_h/Mpc': 50.,
             'omega_cdm': omega_cdm_fid,
             'omega_b': omega_b_fid,
             'h': h_fid,
             'A_s': As_fid,
             'n_s': ns_fid,
-            'N_ur':2.0328, 
-            'N_ncdm':1, 
-            'omega_ncdm':0.0006442
+            'N_ur': 2.038,
+            'N_ncdm': 1,
+            'm_ncdm': 0.1,
+            'tau_reio': 0.0544,
+            'z_max_pk': 3,
             }
 
             cosmo_fid = Class()
