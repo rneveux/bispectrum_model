@@ -13,5 +13,5 @@ module load anaconda
 f=$(($2+124))
 for i in `seq $2 $f`
 do
-python compute_kernels_classpt.py -redshift $1 -cosmo $i -directory $3 -Omfid $4
+python pyscripts/compute_kernels_classpt.py -redshift $1 -cosmo $i -directory $3 -Omfid $4
 done

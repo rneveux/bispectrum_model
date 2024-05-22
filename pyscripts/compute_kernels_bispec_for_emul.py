@@ -53,14 +53,14 @@ def main(args):
 
     if not os.path.exists(name_file):
 
-        '''cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[args.cosmo]
-        h = cosmo[2]
-        omega_cdm = cosmo[0]
-        omega_b = cosmo[1]
-        lnAs = cosmo[3]
-        ns = cosmo[4]
+        cosmo_lhs = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[args.cosmo]
+        h = cosmo_lhs[2]
+        omega_cdm = cosmo_lhs[0]
+        omega_b = cosmo_lhs[1]
+        lnAs = cosmo_lhs[3]
+        ns = cosmo_lhs[4]
         
-        params_cosmo = {
+        '''params_cosmo = {
             'z_pk':z,
             'output': 'mPk',
             'z_max_pk': 3.,
@@ -76,20 +76,20 @@ def main(args):
         }'''
 
 
-        cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/forFFcomp/eft_cosmologies_h_lnAs_Ocdm.npy')[args.cosmo]
+        '''cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/forFFcomp/eft_cosmologies_h_lnAs_Ocdm.npy')[args.cosmo]
 
         h = cosmo[0]
         omega_cdm = cosmo[2]
-        lnAs = cosmo[1]
+        lnAs = cosmo[1]'''
 
         params_cosmo = {
             'output': 'mPk',
             'P_k_max_h/Mpc': 50.,
             'h': h,
-            'omega_b': 0.022,
+            'omega_b': omega_b,
             'omega_cdm': omega_cdm,
             'ln10^{10}A_s': lnAs,
-            'n_s': 0.965,
+            'n_s': ns,
             'N_ur': 2.038,
             'N_ncdm': 1,
             'm_ncdm': 0.1,
@@ -162,7 +162,6 @@ def main(args):
                 c.kernel_computation_Bk(ker, k, ell1, ell2, ELL, integrand=part)
                 bk_kernels.append(c.BK['K'])
         bk_kernels = np.array(bk_kernels)
-        
         np.savetxt(name_file, bk_kernels)
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import classy
 
 parser = argparse.ArgumentParser(description='Computation of power kernels using CLASS-PT')
 parser.add_argument('-redshift', type=float, required=True)
-parser.add_argument('-cosmo', type=int, help='number of cosmology in Jamie file', required=True)
+parser.add_argument('-cosmo', type=int, help='number of cosmology in cosmology file', required=True)
 parser.add_argument('-directory', type=str, help='save directory', required=True)
 parser.add_argument('-kmin', type=float, default=.005, required=False)
 parser.add_argument('-kmax', type=float, default=.3025, required=False)
@@ -28,7 +28,7 @@ all_kernels =   [
                         40, 41, 42
                         ]
 
-'''cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[cmdline.cosmo]
+cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/lnAs/eft_cosmologies_noDQ1.npy')[cmdline.cosmo]
 
 h = cosmo[2]
 omega_cdm = cosmo[0]
@@ -36,13 +36,29 @@ omega_b = cosmo[1]
 lnAs = cosmo[3]
 ns = cosmo[4]
 
-params_cosmo = {'k_output_values':2.0,'output': 'tCl mPk','z_max_pk': 3.,'P_k_max_h/Mpc': 50., 'z_pk':z,
+'''params_cosmo = {'k_output_values':2.0,'output': 'tCl mPk','z_max_pk': 3.,'P_k_max_h/Mpc': 50., 'z_pk':z,
             'omega_cdm':omega_cdm,'omega_b':omega_b,'h':h,
             'ln10^{10}A_s':lnAs,
             'n_s':ns,
                'N_ur':2.0328, 'N_ncdm':1, 'omega_ncdm':0.0006442}'''
 
-cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/forFFcomp/eft_cosmologies_h_lnAs_Ocdm.npy')[cmdline.cosmo]
+params_cosmo = {
+    'output': 'mPk',
+    'P_k_max_h/Mpc': 50.,
+    'h': h,
+    'omega_b': omega_b,
+    'omega_cdm': omega_cdm,
+    'ln10^{10}A_s': lnAs,
+    'n_s': ns,
+    'N_ur': 2.038,
+    'N_ncdm': 1,
+    'm_ncdm': 0.1,
+    'tau_reio': 0.0544,
+    'z_max_pk': 3,
+    'z_pk':cmdline.redshift,
+}
+
+'''cosmo = np.load('/home/rneveux/bispectrum/theory/cosmologies/forFFcomp_test/eft_cosmologies_h_lnAs_Ocdm_test_small_hypervolume.npy')[cmdline.cosmo]
 
 h = cosmo[0]
 omega_cdm = cosmo[2]
@@ -61,7 +77,7 @@ params_cosmo = {
     'm_ncdm': 0.1,
     'tau_reio': 0.0544,
     'z_max_pk': 3,
-}
+}'''
 
 c = Class()
 c.set(params_cosmo)
@@ -104,4 +120,7 @@ for i in all_kernels[:-3]:
 
 c_mult = c_mult[all_kernels]
 
-np.savetxt(os.path.join(cmdline.directory,f'pk_kernels_{cmdline.cosmo}.txt'),c_mult)
+if cmdline.cosmo == 0:
+    np.savetxt(os.path.join(cmdline.directory,f'k_emul.txt'),k)
+os.makedirs(os.path.join(cmdline.directory,'kernels'), exist_ok=True)
+np.savetxt(os.path.join(cmdline.directory,f'kernels/pk_kernels_{cmdline.cosmo}.txt'),c_mult)

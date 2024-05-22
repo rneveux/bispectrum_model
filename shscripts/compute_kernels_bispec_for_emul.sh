@@ -16,6 +16,6 @@ for l in 000 202
 do
 for i in `seq $1 $(($1 + 124))`
 do
-python kernels_bispectrum.py -cosmo $i  -redshift .38 -ells $l -directory /home/rneveux/kernels_EFT/bk/z0.38/Omfid.317/kernels/ -Omfid .317 -k_list /home/rneveux/kernels_EFT/bk/z0.38/Omfid.317/k_data.txt
+python pyscripts/compute_kernels_bispec_for_emul.py -cosmo $i  -redshift .61 -ells $l -directory /home/rneveux/kernels_EFT/bk/z0.61/Omfid.317/full_cosmo/kernels/ -Omfid .317 -k_list /home/rneveux/kernels_EFT/bk/z0.61/Omfid.317/k_data.txt
 done
 done
